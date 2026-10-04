@@ -36,8 +36,14 @@ PRODUCT_PACKAGES += \
     vendor.dolby.media.c2.xml
 
 # Configs
+ifeq ($(TARGET_INCLUDES_DolbyVision),true)
+PRODUCT_COPY_FILES += \
+    $(DOLBY_PATH)/proprietary/vendor/etc/vision/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
+else
+
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/proprietary/vendor/etc/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml
+endif
 
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/proprietary/vendor/etc/dolby/dax-default-spatializer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/dolby/dax-default-spatializer.xml \
@@ -62,17 +68,15 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DOLBY_PATH)/configs/android.hardware.sensor.dynamic.head_tracker.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.dynamic.head_tracker.xml
 
-# Dolby Spatial Audio: optimize spatializer effect
-PRODUCT_VENDOR_PROPERTIES += \
-       audio.spatializer.effect.util_clamp_min=300
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+       ro.audio.headtracking_enabled=true
 
 # Dolby Spatial Audio: declare use of spatial audio
-PRODUCT_VENDOR_PROPERTIES += \
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
        ro.audio.spatializer_enabled=true \
-       ro.audio.headtracking_enabled=true \
        ro.audio.spatializer_transaural_enabled_default=false \
        ro.audio.stereo_spatialization_enabled=true \
-       persist.vendor.audio.spatializer.speaker_enabled=true
+       persist.vendor.audio.spatializer.speaker_enabled=false
 
 # Dolby Spatial Audio Proprietary blobs
 PRODUCT_PACKAGES += \
